@@ -1,0 +1,10 @@
+/* App.css — cleaned for your real app */
+
+#root {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  min-height: 100vh;
+  background-color: #f0f4f1;
+}
