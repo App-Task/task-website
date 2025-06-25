@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -10,13 +10,22 @@ import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 
 export default function App() {
-  const isAdmin = localStorage.getItem("isAdmin") === "true";
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  // ✅ Check localStorage on load (so SSR or refresh works)
+  useEffect(() => {
+    const adminFlag = localStorage.getItem("isAdmin") === "true";
+    setIsAdmin(adminFlag);
+  }, []);
 
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Landing />} />
-        <Route path="/admin" element={<AdminLogin />} />
+        <Route
+          path="/admin"
+          element={<AdminLogin onLoginSuccess={() => setIsAdmin(true)} />}
+        />
         <Route
           path="/admin/dashboard"
           element={
