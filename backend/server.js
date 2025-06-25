@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 5000;
 
 const corsOptions = {
   origin: "https://task-websitee.netlify.app",
-  methods: ["GET", "POST", "PATCH", "OPTIONS"], // ✅ added PATCH
+  methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"], // ✅ Add PATCH here
   allowedHeaders: ["Content-Type", "Authorization"],
 };
 
