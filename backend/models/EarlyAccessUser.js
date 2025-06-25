@@ -5,6 +5,13 @@ const EarlyAccessUserSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   role: { type: String, enum: ["client", "tasker"], required: true },
   age: { type: Number, required: true },
+  status: {
+    type: String,
+    enum: ["pending", "accepted", "rejected"],
+    default: "pending",
+  },
+  
+  
   clientAnswers: {
     taskType: String,
     usageFrequency: String,

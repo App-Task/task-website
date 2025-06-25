@@ -3,15 +3,15 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const earlyAccessRoutes = require("./routes/earlyAccess");
+const adminRoutes = require("./routes/admin"); // ✅ add this
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// ✅ Allow only your Netlify frontend
 const corsOptions = {
-  origin: "https://task-websitee.netlify.app", // ✅ your live frontend
+  origin: "https://task-websitee.netlify.app", 
   methods: ["GET", "POST", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
 };
@@ -21,6 +21,7 @@ app.use(express.json());
 
 // ✅ Routes
 app.use("/api/early-access", earlyAccessRoutes);
+app.use("/api/admin", adminRoutes); // ✅ add this line
 
 // ✅ MongoDB Connection
 mongoose
