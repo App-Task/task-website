@@ -9,15 +9,14 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-
-// ✅ Preflight-safe CORS for frontend
+// ✅ Allow only your Netlify frontend
 const corsOptions = {
-  origin: "http://localhost:5173",
+  origin: "https://task-websitee.netlify.app", // ✅ your live frontend
   methods: ["GET", "POST", "OPTIONS"],
-  allowedHeaders: ["Content-Type"],
+  allowedHeaders: ["Content-Type", "Authorization"],
 };
 
-app.use(cors(corsOptions)); // ✅ DON'T add app.options("*") on Node 22+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // ✅ Routes
@@ -32,7 +31,7 @@ mongoose
   .then(() => {
     console.log("✅ MongoDB connected");
     app.listen(PORT, () =>
-      console.log(`🚀 Server running on http://localhost:${PORT}`)
+      console.log(`🚀 Server running on port ${PORT}`)
     );
   })
   .catch((err) => {
