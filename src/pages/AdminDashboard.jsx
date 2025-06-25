@@ -160,7 +160,7 @@ export default function AdminDashboard() {
       )}
 
 {selectedUser && (
-  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 overflow-y-auto">
     <div className="bg-white p-6 rounded-lg max-w-lg w-full shadow-xl space-y-4">
       <h2 className="text-xl font-bold text-[#215432]">User Details</h2>
       <p><strong>Name:</strong> {selectedUser.name}</p>
