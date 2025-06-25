@@ -8,6 +8,8 @@ export default function AdminDashboard() {
   const [roleFilter, setRoleFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [loading, setLoading] = useState(true);
+  const [selectedUser, setSelectedUser] = useState(null);
+
 
   const fetchStats = async () => {
     const res = await fetch(`${apiURL}/api/early-access/stats`);
@@ -34,9 +36,11 @@ export default function AdminDashboard() {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status: newStatus }),
+
     });
     fetchUsers(); // Refresh list
     fetchStats(); // Refresh stats
+    setSelectedUser(null); // add this line after successful update
   };
 
   const logout = () => {
@@ -123,7 +127,10 @@ export default function AdminDashboard() {
             <tbody className="text-sm text-gray-700">
               {users.map((user) => (
                 <tr key={user._id} className="border-t">
-                  <td className="p-3">{user.name}</td>
+                  <td className="p-3 text-blue-600 underline cursor-pointer" onClick={() => setSelectedUser(user)}>
+                    {user.name}
+                  </td>
+
                   <td className="p-3">{user.email}</td>
                   <td className="p-3 capitalize">{user.role}</td>
                   <td className="p-3 capitalize">{user.status}</td>
@@ -151,8 +158,63 @@ export default function AdminDashboard() {
           </table>
         </div>
       )}
+
+{selectedUser && (
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div className="bg-white p-6 rounded-lg max-w-lg w-full shadow-xl space-y-4">
+      <h2 className="text-xl font-bold text-[#215432]">User Details</h2>
+      <p><strong>Name:</strong> {selectedUser.name}</p>
+      <p><strong>Email:</strong> {selectedUser.email}</p>
+      <p><strong>Role:</strong> {selectedUser.role}</p>
+      <p><strong>Age:</strong> {selectedUser.age}</p>
+
+      {selectedUser.role === "client" && (
+        <>
+          <h3 className="font-semibold mt-4">Client Answers</h3>
+          <p><strong>Task Type:</strong> {selectedUser.clientAnswers?.taskType}</p>
+          <p><strong>Usage Frequency:</strong> {selectedUser.clientAnswers?.usageFrequency}</p>
+          <p><strong>Contact Method:</strong> {selectedUser.clientAnswers?.contactMethod}</p>
+        </>
+      )}
+
+      {selectedUser.role === "tasker" && (
+        <>
+          <h3 className="font-semibold mt-4">Tasker Answers</h3>
+          <p><strong>Services Offered:</strong> {selectedUser.taskerAnswers?.servicesOffered}</p>
+          <p><strong>Experience Level:</strong> {selectedUser.taskerAnswers?.experienceLevel}</p>
+          <p><strong>Weekly Availability:</strong> {selectedUser.taskerAnswers?.weeklyAvailability}</p>
+        </>
+      )}
+
+      <div className="flex justify-end gap-3 mt-6">
+        <button
+          onClick={() => updateStatus(selectedUser._id, "accepted")}
+          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+        >
+          Accept
+        </button>
+        <button
+          onClick={() => updateStatus(selectedUser._id, "rejected")}
+          className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+        >
+          Reject
+        </button>
+        <button
+          onClick={() => setSelectedUser(null)}
+          className="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400"
+        >
+          Close
+        </button>
+      </div>
     </div>
+  </div>
+)}
+
+    </div>
+
+    
   );
+  
 }
 
 function StatCard({ label, value }) {
