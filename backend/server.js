@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const earlyAccessRoutes = require("./routes/earlyAccess");
-const adminRoutes = require("./routes/admin"); // ✅ add this
+const adminRoutes = require("./routes/admin"); 
 
 dotenv.config();
 
@@ -22,7 +22,7 @@ app.use(express.json());
 
 // ✅ Routes
 app.use("/api/early-access", earlyAccessRoutes);
-app.use("/api/admin", adminRoutes); // ✅ add this line
+app.use("/api/admin", adminRoutes); 
 
 // ✅ MongoDB Connection
 mongoose
